@@ -1,0 +1,180 @@
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+body {
+  background: radial-gradient(
+    circle at center,
+    #f4f6fa,
+    #f4f6fa 50%,
+    #f4f6fa 75%,
+    #f4f6fa 100%
+  );
+  color: rgb(49, 62, 81);
+  font-family: "Rubik", sans-serif;
+  font-size: 16px;
+}
+
+.container {
+  padding: 2em;
+}
+
+/* Navbar */
+.navbar {
+  padding: 2rem;
+}
+
+/* .menu-wrapper {
+} */
+
+.menu-list {
+  list-style-type: none;
+  display: flex;
+}
+
+.menu-list a {
+  text-decoration: none;
+}
+
+.menu-list a:link {
+  color: rgb(167, 41, 245);
+}
+
+.menu-list a:visited {
+  color: rgb(59, 77, 102);
+}
+
+.menu-list a:hover {
+  color: rgb(38, 215, 130);
+}
+
+.menu-list a:active {
+  color: rgb(98, 108, 127);
+}
+
+.menu-link {
+  font-size: 30px;
+  margin-right: 1rem;
+}
+
+/* Home page specific styles */
+
+/* .main {
+  background-color: red;
+  display: flex;
+} */
+
+.content-box {
+  display: flex;
+}
+
+.heading-box {
+  flex-basis: 50%;
+}
+
+.buttons-box {
+  display: flex;
+  flex-direction: column;
+  flex-basis: 50%;
+}
+
+.button {
+  background-color: #fff;
+  margin: 1rem;
+  padding-right: 5rem;
+  padding-left: 1rem;
+  border-radius: 24px;
+  font-size: 20px;
+  text-decoration: none;
+  display: flex;
+  align-items: center;
+  color: rgb(49, 62, 81);
+  max-width: 564px;
+  height: 6rem;
+  font-size: 28px;
+}
+
+.button:hover {
+  cursor: pointer;
+}
+
+.icon {
+  height: 56px;
+  margin-right: 2rem;
+}
+
+/* End of Home page specific styles */
+
+/* Quiz specific styles */
+.quizBox {
+  display: flex;
+}
+
+.questionHeading {
+  font-size: 20px;
+  color: rgb(98, 108, 127);
+  font-weight: 400;
+}
+
+.questionSubheading {
+  font-size: 36px;
+}
+
+.answersDisplay {
+  display: flex;
+  flex-direction: column;
+}
+
+.questionButton {
+  display: block;
+}
+/* End of quiz specific styles */
+
+.heading {
+  font-size: 64px;
+}
+
+table {
+  table-layout: fixed;
+  width: 100%;
+  border-collapse: collapse;
+  background-color: rgb(255, 255, 255);
+  border-radius: 24px;
+  text-align: center;
+  margin: 2rem auto;
+}
+
+th {
+  padding: 0.5rem;
+  font-size: 28px;
+  font-weight: 700;
+  letter-spacing: 0.1rem;
+}
+
+td {
+  padding: 0.5rem;
+  font-size: 20px;
+}
+
+td li {
+  font-size: 20px;
+}
+
+ul {
+  list-style-position: inside;
+}
+
+.button-addition {
+  background-color: rgb(167, 41, 245);
+  color: rgb(255, 255, 255);
+}
+
+.red-answer {
+  color: red;
+}
+
+.green-answer {
+  color: green;
+}

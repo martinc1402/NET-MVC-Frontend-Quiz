@@ -1,0 +1,17 @@
+@model FrontEndQuiz.Models.Answer
+
+@{
+    ViewData["Title"] = $"Edit Answer {@Model.AnswerId}";
+}
+
+<h1>Edit Answer @Model.AnswerId</h1>
+
+<form asp-controller="Quiz" asp-action="EditAnswer" method="post">
+    <input type="hidden" asp-for="@Model.AnswerId">
+    <label asp-for="@Model.AnswerText">Answer</label>
+    <input asp-for="@Model.AnswerText" />
+    <label asp-for="@Model.IsCorrect">Correct?</label>
+    <input asp-for="@Model.IsCorrect" />
+     <input type="hidden" asp-for="@Model.QuestionId" />
+    <button type="submit" class="btn btn-primary">Save</button>
+</form>

@@ -1,0 +1,35 @@
+@model FrontEndQuiz.ViewModels.QuizViewModel
+@{
+    ViewData["Title"] = $"Edit Question {@Model._question.QuestionId}";
+}
+
+<h1>Edit question @Model._question.QuestionId</h1>
+
+<form asp-controller="Quiz" asp-action="EditQuestion" method="post">
+    <input type="hidden" asp-for="@Model._question.QuestionId">
+    <label asp-for="@Model._question.Title">Title</label>
+    <input asp-for="@Model._question.Title" />
+
+    <label asp-for="@Model._question.QuestionString">Question</label>
+    <input asp-for="@Model._question.QuestionString" />
+
+    @for (var i = 0; i < @Model._question.Answers.Count; i++)
+    {
+  <label asp-for="@Model._question.Answers[i].AnswerText">Answer @(i +1)</label>
+  <input asp-for="@Model._question.Answers[i].AnswerText" />
+  <label asp-for="@Model._question.Answers[i].IsCorrect">Correct?</label>
+  <input asp-for="@Model._question.Answers[i].IsCorrect" />
+    }
+
+
+
+
+<div class="form-group row">
+  <label for="SelectedTopicId" class="col-sm-2 col-form-label">Select Topic</label>
+  <div class="col-sm-10">
+    <select asp-for="SelectedTopicId" class="form-control" asp-items="@(new SelectList(Model._topics, "TopicId", "TopicName"))"></select>
+  </div>
+</div>
+
+<button type="submit" class="btn btn-primary">Save</button>
+</form>

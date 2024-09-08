@@ -1,0 +1,58 @@
+@model IEnumerable<FrontEndQuiz.Models.Question>
+
+@{
+    ViewData["Title"] = "Quiz";
+}
+
+<h1>Quiz</h1>
+
+<table class="table table-bordered">
+<thead>
+<tr>
+    <th>Question Title</th>
+    <th>Question</th>
+    <th>Answers</th>
+    <th>Topic</th>
+    <th>Actions</th>
+</tr>
+</thead>
+<tbody>
+    @foreach(var question in Model)
+    {
+        <tr>
+            <td>@question.Title</td>
+            <td>@question.QuestionString</td>
+            <td>
+                <ul>
+                @foreach (var answer in question.Answers)
+                {
+                   <li>
+                    @answer.AnswerText (@(answer.IsCorrect ? "Correct" : "Incorrect"))
+                   
+                      
+                    
+                    <form asp-action="DeleteAnswer" method="post" style="display:inline;" asp-route-id="@answer.AnswerId">
+                        <button type="submit" class="btn btn-danger btn-sm">Delete</button>
+                    </form>
+                    <a asp-action="EditAnswer" asp-route-id="@answer.AnswerId" class="btn btn-warning btn-sm">Edit Answer</a>
+                    </li>
+                }
+                </ul>
+        
+            </td>
+            <td>@question.Topic.TopicName</td>
+
+            <td>
+                <a asp-action="EditQuestion" asp-route-id="@question.QuestionId" class="btn btn-warning btn-sm">Edit Question</a>
+                <a asp-action="CreateAnswer" asp-route-id="@question.QuestionId" class="btn btn-primary btn-sm">Add Answer</a>
+                <form asp-action="DeleteQuestion" method="post" style="display:inline;" asp-route-id="@question.QuestionId">
+                    <button type="submit" class="btn btn-danger btn-sm">Delete</button>
+                </form>
+            </td>
+        </tr>
+    }
+
+</tbody>
+</table>
+
+<a asp-action="CreateQuestion" class="button button-addition">Add a New Question</a>

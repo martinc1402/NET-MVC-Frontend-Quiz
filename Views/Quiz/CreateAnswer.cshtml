@@ -1,0 +1,15 @@
+@model FrontEndQuiz.Models.Answer
+@{
+    ViewData["Title"] = "Create Answer";
+}
+
+<h1>Create a new answer</h1>
+<form asp-controller="Quiz" asp-action="CreateAnswer" method="post">
+    <label asp-for="@Model.AnswerText">Answer</label>
+    <input asp-for="@Model.AnswerText" />
+    <label asp-for="@Model.IsCorrect">Correct?</label>
+    <input asp-for="@Model.IsCorrect" />
+    <label asp-for="@Model.QuestionId">Question Id</label>
+    <input asp-for="@Model.QuestionId" />
+    <button type="submit" class="btn btn-primary">Save</button>
+</form>

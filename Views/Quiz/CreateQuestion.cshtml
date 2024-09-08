@@ -1,0 +1,76 @@
+@model FrontEndQuiz.ViewModels.QuizViewModel
+@{
+    ViewData["Title"] = "Create Question";
+}
+
+@* <link rel="stylesheet" href="/css/createquestion.css" /> *@
+
+<h1>Create a new question</h1>
+@* 
+<form method="post" asp-action="CreateQuestion">
+    <div class="form-group row">
+      <label for="@Model._question.Title" class="col-sm-2 col-form-label">Question Title</label>
+      <div class="col-sm-10">
+        <input type="text" class="form-control" asp-for="@Model._question.Title" />
+      </div>
+    </div>
+    <div class="form-group row">
+      <label for="@Model._question.QuestionString" class="col-sm-2 col-form-label">Question</label>
+      <div class="col-sm-10">
+       <input type="text" class="form-control" asp-for="@Model._question.QuestionString" />
+      </div>
+    </div>
+    <div class="form-group row">
+      <label for="@Model._answer[0].AnswerText" class="col-sm-2 col-form-label">Answer</label>
+      <div class="col-sm-10">
+       <input type="text" class="form-control" asp-for="@Model._answer[0].AnswerText" />
+      </div>
+      <label for="@Model._answer[0].IsCorrect" class="col-sm-2 col-form-label">Correct?</label>
+      <div class="col-sm-10">
+       <input type="checkbox" asp-for="@Model._answer[0].IsCorrect" />
+      </div>
+    </div>
+
+    @for(var i = 0; i < @Model._topics.Count(); i++)
+    {
+      <p>@Model._topics[i].TopicName</p>
+
+    }
+    <br />
+    <button type="submit" class="btn btn-primary">Save</button>
+</form> *@
+
+<form asp-controller="Quiz" asp-action="CreateQuestion" method="post">
+  <label asp-for="@Model._question.Title">Question title</label>
+  <input asp-for="@Model._question.Title" />
+
+  <label asp-for="@Model._question.QuestionString">Question</label>
+  <input asp-for="@Model._question.QuestionString" />
+
+@for (var i = 0; i < @Model._answer.Count; i++)
+{
+  <label asp-for="@Model._answer[i].AnswerText">Answer @(i +1)</label>
+  <input asp-for="@Model._answer[i].AnswerText" />
+  <label asp-for="@Model._answer[i].IsCorrect">Correct?</label>
+  <input asp-for="@Model._answer[i].IsCorrect" />
+}
+
+@* <select>
+  @for (var i = 0; i < @Model._topics.Count; i++)
+  {
+    <option value="@Model._topics[i].TopicId" asp-for="@Model._topics[i].TopicId">@Model._topics[i].TopicName</option>
+  }
+</select>
+
+<input type="hidden" asp-for="@Model.SelectedTopicId" value=""/> *@
+
+<div class="form-group row">
+  <label for="SelectedTopicId" class="col-sm-2 col-form-label">Select Topic</label>
+  <div class="col-sm-10">
+    <select asp-for="SelectedTopicId" class="form-control" asp-items="@(new SelectList(Model._topics, "TopicId", "TopicName"))"></select>
+  </div>
+</div>
+
+<button type="submit" class="btn btn-primary">Save</button>
+
+    </form>

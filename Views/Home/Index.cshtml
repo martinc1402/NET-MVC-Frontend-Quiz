@@ -1,0 +1,15 @@
+﻿@model IEnumerable<FrontEndQuiz.Models.SpecModels.Topic>
+
+<div class="content-box">
+<div class="heading-box">
+<h1 class="heading"><span class="heading-main">Welcome to the</span> <span class="heading-sub">Frontend Quiz!</span></h1>
+<p class="tagline">Pick a subject to get started</p>
+</div>
+<div class="buttons-box">
+@foreach (var topic in @Model)
+{
+    <a asp-action="TopicQuiz" asp-route-id="@topic.TopicId" class="button"><img class="icon" src="@topic.TopicImageFilePath" alt="@topic.TopicName"/><span class="buttonText">@topic.TopicName</span></a>
+}   
+</div>
+</div>
+

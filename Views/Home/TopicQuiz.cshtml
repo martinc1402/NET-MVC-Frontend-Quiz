@@ -6,9 +6,14 @@
 
 <div class="quizBox">
 <div id="questionDisplay" class="questionBox"></div>
-<div id="answersDisplay"></div>
+<div id="answersDisplay" class="answersBox">
+
+  
 </div>
-<button id="nextButton">Next</button>
+  
+</div>
+
+
 
 
 
@@ -31,7 +36,6 @@
     
     // Add an array to store user answers
      let answerSubmissions = [];
-     console.log(answerSubmissions);
 
 
      // Function to diplay the current item
@@ -92,6 +96,12 @@
                 //console.log(questionButton.dataset.isCorrect);
                 //console.log(questionButton);
             }
+
+            let nextQuestionButton = document.createElement("button");
+            nextQuestionButton.textContent = "Next Question";
+            nextQuestionButton.classList.add("nextQuestion");
+            nextQuestionButton.setAttribute('id', 'nextButton');
+            answerDiv.appendChild(nextQuestionButton);
 
              
         } 
@@ -181,18 +191,35 @@
         // Add a click event listener to each button
         answerButtons.forEach(button => {
             button.addEventListener('click', () => {          
-             //console.log(button.dataset.answerId);
-                //console.log(answersArray[0]["answerText"]);
-                answerSubmissions.push(parseInt(button.dataset.answerId));
+         
+               // Push the selected button's answer ID into the answerSubmissions array to be used at the end of the quiz to calculate results
+                let selectedAnswerId = button.dataset.answerId;
+                answerSubmissions.push(parseInt(selectedAnswerId));
                 console.log(answerSubmissions);
-                //console.log(answersArray);
-                //currentIndex++;
-                //displayCurrentItem();
-
+                
+                 
                 // Write a function to show the user their result immediately after they select item
-                for (bigBoyButton of answerButtons) {
-                    console.log(bigBoyButton);
-                   bigBoyButton.classList.add('red-answer');
+
+                console.log(button.dataset.answerId);
+
+                
+                console.log(selectedAnswerId);
+
+                for (button of answerButtons) {
+                 let n = 0;
+                 while (n < answersArray.length) {
+                    if ((button.dataset.answerId == selectedAnswerId) && answersArray[n]["answerId"] == selectedAnswerId && answersArray[n]["isCorrect"]) {
+                        button.classList.add("green-answer");
+                    } else if ((button.dataset.answerId == selectedAnswerId) && answersArray[n]["answerId"] == selectedAnswerId && !answersArray[n]["isCorrect"]) {
+                        button.classList.add("red-answer");
+                    } else if (button.dataset.answerId == answersArray[n]["answerId"] && answersArray[n]["isCorrect"])
+                    {
+                        button.classList.add("green-answer");
+                    }
+                    n++;
+                 }
+               
+                  
                 }
             
                 
@@ -208,13 +235,24 @@
  
      function handleNextQuestion() {
         // Increment the index to show the next item
+        console.log("hey");
         currentIndex++;
         displayCurrentItem(); // Update the displayed item
      }
 
      // Set up the initial display and button event listener
      displayCurrentItem();
-     document.getElementById('nextButton').addEventListener('click', handleNextQuestion);  
+
+
+ const answerDisplayDiv = document.getElementById('answersDisplay');
+    
+ answerDisplayDiv.addEventListener("click", (event) => {
+      if(event.target.textContent == "Next Question") {
+          handleNextQuestion();
+       }
+   })
+
+
   })
   .catch(error => {
     console.error(error);

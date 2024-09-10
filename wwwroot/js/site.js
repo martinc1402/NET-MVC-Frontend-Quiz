@@ -1,62 +1,42 @@
-﻿// // Please see documentation at https://learn.microsoft.com/aspnet/core/client-side/bundling-and-minification
-// // for details on configuring this project to bundle and minify static web assets.
+﻿function calculateSettingsAsThemeString({
+  localStorageTheme,
+  systemSettingDark,
+}) {
+  if (localStorageTheme !== null) {
+    return localStorageTheme;
+  }
 
-// // Write your JavaScript code.
+  if (systemSettingDark.matches) {
+    return "dark";
+  }
 
-// // 1. Initialise an array for answers
-// // var answerArray = [];
+  return "light";
+}
 
-// // 2. populate the array with the items in the model
-// // @foreach (var q in Model)
-// // {
-// //   @foreach (var a in q.Answers)
-// //   {
-// //       @:answerArray.push("@a.AnswerText");
-// //   }
-// // }
+let localStorageTheme = localStorage.getItem("theme");
+let systemSettingDark = window.matchMedia("(prefers-color-scheme: dark)");
+const html = document.querySelector("html");
 
-// // 1. Initialise a JavaScript array for questions
-// var questionArray = new Array();
+let currentThemeSetting = calculateSettingsAsThemeString({
+  localStorageTheme,
+  systemSettingDark,
+});
 
-// // 2. Populate the array with the items in the model
-// foreach(question in Model);
-// {
-//   questionArray.push("@question.Title");
-// }
+window.addEventListener("load", () => {
+  html.setAttribute("data-theme", currentThemeSetting);
+});
 
-// // 3. Initialise a counter variable at index 0
-// let counter = 0;
+const toggleSwitch = document.querySelector("input[id=checkbox-theme]");
 
-// // 4. Populate the html content of a div with the question at the counter position of the array (initially position 0) and the answers associated with the question. Increment the counter variable by 1.
-// window.addEventListener("Load", LoadQuestion());
+toggleSwitch.addEventListener("change", () => {
+  let newTheme = currentThemeSetting === "dark" ? "light" : "dark";
 
-// function LoadQuestion() {
-//   console.log("Load Question");
-//   const para = document.createElement("p");
-//   const node = document.createTextNode(
-//     questionArray[counter] + answerArray[counter]
-//   );
-//   para.appendChild(node);
+  // Update theme attribute on HTML to switch css properties
+  html.setAttribute("data-theme", newTheme);
 
-//   const element = document.getElementById("questionDisplay");
-//   element.appendChild(para);
-//   counter++;
-// }
-// // 5. When a user answers the question (initially just clicks the 'next' button), check that the counter variable is less than the length of the array
+  // Update local storage key-value pair
+  localStorage.setItem("theme", newTheme);
 
-// // 6. If the counter variable is less than the length of the array, populate the html content with the next question (i.e. the current counter position). If the counter variable isn't less than the length of the array end the quiz.
-// const button = document.getElementById("nextButton");
-// button.addEventListener("click", nextQuestion);
-
-// function nextQuestion() {
-//   if (counter < questionArray.length) {
-//     const para = document.createElement("p");
-//     const node = document.createTextNode(questionArray[counter]);
-//     para.appendChild(node);
-
-//     const element = document.getElementById("questionDisplay");
-//     element.replaceChildren();
-//     element.appendChild(para);
-//     counter++;
-//   }
-// }
+  // Update the currentThemeSetting in memory
+  currentThemeSetting = newTheme;
+});

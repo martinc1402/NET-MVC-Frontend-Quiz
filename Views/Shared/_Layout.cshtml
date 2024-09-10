@@ -1,5 +1,5 @@
 ﻿<!DOCTYPE html>
-<html lang="en">
+<html lang="en" data-theme="light">
 <head>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
@@ -9,8 +9,10 @@
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Rubik:ital,wght@0,300..900;1,300..900&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="~/css/site.css" asp-append-version="true" />
+    
 </head>
 <body>
+      
     <header class="header">
         <nav class="navbar">
             <div class="menu-wrapper">
@@ -22,6 +24,10 @@
                         <a class="menu-link" asp-area="" asp-controller="Quiz" asp-action="Index">Questions</a>
                     </li>
                 </ul>
+               <label id="theme-switch" class="theme-switch" for="checkbox_theme">
+                <input type="checkbox" id="checkbox-theme">
+                <label for="checkbox-theme" class="fas"></label>
+               </label>
             </div>
         </nav>
     </header>
@@ -31,10 +37,10 @@
         </main>
     </div>
 
-
+<script src="~/js/site.js" asp-append-version="true"></script>
     <script src="~/lib/jquery/dist/jquery.min.js"></script>
     <script src="~/lib/bootstrap/dist/js/bootstrap.bundle.min.js"></script>
-    <script src="~/js/site.js" asp-append-version="true"></script>
+  
     @await RenderSectionAsync("Scripts", required: false)
 </body>
 </html>

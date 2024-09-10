@@ -4,15 +4,23 @@
   box-sizing: border-box;
 }
 
+[data-theme="light"] {
+  --background-color: rgb(244, 246, 250);
+  --heading: rgb(49, 62, 81);
+  --subheading: rgb(98, 108, 27);
+  --button-background: rgb(255, 255, 255);
+}
+
+[data-theme="dark"] {
+  --background-color: rgb(59, 77, 102);
+  --heading: rgb(255, 255, 255);
+  --subheading-color: rgb(171, 193, 225);
+  --button-background: rgb(98, 108, 127);
+}
+
 body {
-  background: radial-gradient(
-    circle at center,
-    #f4f6fa,
-    #f4f6fa 50%,
-    #f4f6fa 75%,
-    #f4f6fa 100%
-  );
-  color: rgb(49, 62, 81);
+  background-color: var(--background-color);
+  color: var(--heading);
   font-family: "Rubik", sans-serif;
   font-size: 16px;
 }
@@ -58,6 +66,10 @@ body {
   font-size: 30px;
   margin-right: 1rem;
 }
+
+/* Global styles relevant to layout etc */
+
+/* End of global styles */
 
 /* Home page specific styles */
 
@@ -134,8 +146,8 @@ body {
 }
 
 .questionButton {
-  background-color: rgb(255, 255, 255);
-  color: rgb(49, 62, 81);
+  background-color: var(--button-background);
+  color: var(--heading);
   border-radius: 15px;
   border: none;
   margin: 0.5rem 0;

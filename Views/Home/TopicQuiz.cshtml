@@ -16,249 +16,251 @@
 
 
 
-
 <script>
-    
 
-  const questionsRequest = fetch("/Home/GetAllQuestions").then(response => response.json());
-  const answersRequest = fetch("/Home/GetAllAnswers").then(response => response.json());
+
+
+
+// Retrieve questions and answers data from database
+const questionsRequest = fetch("/Home/GetAllQuestions").then((response) =>
+  response.json()
+);
+const answersRequest = fetch("/Home/GetAllAnswers").then((response) =>
+  response.json()
+);
 // Fetch the data from the API
-  Promise.all([questionsRequest, answersRequest])
+Promise.all([questionsRequest, answersRequest])
   .then(([questionsData, answersData]) => {
-   
-     // Store the fetched data in arrays and initiate a counter variable
-     let questionsArray = questionsData;
-     let answersArray = answersData;
+    // Store the fetched data in arrays and initiate a counter variable
+    let questionsArray = questionsData;
+    let answersArray = answersData;
 
-     //console.log(questionsArray[0]["title"]);
-     //console.log(answersArray[2]["isCorrect"]);
-     let currentIndex = 0;
-    
+    //console.log(questionsArray[0]["title"]);
+    //console.log(answersArray[2]["isCorrect"]);
+    let currentIndex = 0;
+
     // Add an array to store user answers
-     let answerSubmissions = [];
+    let answerSubmissions = [];
 
+    // Function to diplay the current item
+    function displayCurrentItem() {
+      const questionDiv = document.getElementById("questionDisplay");
+      const answerDiv = document.getElementById("answersDisplay");
+      questionDiv.textContent = ""; // Clear the div
+      answerDiv.textContent = "";
 
-     // Function to diplay the current item
-     function displayCurrentItem() {
-        const questionDiv = document.getElementById('questionDisplay');
-        const answerDiv = document.getElementById('answersDisplay');
-        questionDiv.textContent = ''; // Clear the div
-        answerDiv.textContent = '';
+      // check if the current index is within the bounds of the array
+      if (currentIndex < questionsArray.length) {
+        let currentQuestion = document.createElement("h2");
+        currentQuestion.textContent = `Question ${currentIndex + 1} of ${
+          questionsArray.length
+        }`;
+        currentQuestion.classList.add("questionHeading");
+        questionDiv.appendChild(currentQuestion);
 
-        // check if the current index is within the bounds of the array
-        if (currentIndex < questionsArray.length)
-        {
-           let currentQuestion = document.createElement("h2");
-           currentQuestion.textContent = `Question ${currentIndex + 1} of ${questionsArray.length}`;
-           currentQuestion.classList.add("questionHeading");
-           questionDiv.appendChild(currentQuestion);
-          
+        // Add the current element to the div
+        let currentItem = questionsArray[currentIndex]["title"];
+        let questionPara = document.createElement("p");
+        questionPara.textContent = currentItem;
+        questionPara.classList.add("questionSubheading");
+        questionDiv.appendChild(questionPara);
 
-           // Add the current element to the div
-           let currentItem = questionsArray[currentIndex]["title"];
-           let questionPara = document.createElement("p");
-           questionPara.textContent = currentItem;
-           questionPara.classList.add("questionSubheading");
-            questionDiv.appendChild(questionPara);
-             
-            // Initialise an empty array to push the relevant answers into
-            let relevantAnswersArray = [];
+        // Initialise an empty array to push the relevant answers into
+        let relevantAnswersArray = [];
 
-            // Loop through answersArray and compare the question id attribute from the answersArray items with the question id attribute from the current questionArray item
-            for (let i = 0; i < answersArray.length; i++) {
-                if (answersArray[i]["questionId"] == questionsArray[currentIndex]["questionId"]) {
-                    //console.log(`${answersArray[i]["questionId"]} is the same as ${questionsArray[currentIndex]["questionId"]}`);
-                    // Push items to the relevant answers array if there is a match with the question Id
-                     relevantAnswersArray.push(answersArray[i]);
-                }
-            
-            }
-            
-            // Loop through the relevant answers array and dynamically add the relevant answers to the DOM when the relevant question is displayed
-            for (let i = 0; i < relevantAnswersArray.length; i++) {
-                let questionButton = document.createElement("button");
-                let questionNumberSpan = document.createElement("span");
-                questionNumberSpan.classList.add("questionNumberSpan");
-                questionNumberSpan.textContent = String.fromCharCode(97 + (i));
-                questionButton.appendChild(questionNumberSpan);
-
-                let questionTextSpan = document.createElement("span");
-                questionTextSpan.classList.add("questionTextSpan");
-               questionTextSpan.textContent = relevantAnswersArray[i]["answerText"];
-                questionButton.appendChild(questionTextSpan);
-
-                questionButton.dataset.isCorrect = relevantAnswersArray[i]["isCorrect"];
-                questionButton.dataset.questionId = relevantAnswersArray[i]["questionId"];
-                 questionButton.dataset.answerId = relevantAnswersArray[i]["answerId"];
-                questionButton.classList.add("questionButton");
-                answerDiv.appendChild(questionButton);
-
-                //console.log(questionButton.dataset.isCorrect);
-                //console.log(questionButton);
-            }
-
-            let nextQuestionButton = document.createElement("button");
-            nextQuestionButton.textContent = "Next Question";
-            nextQuestionButton.classList.add("nextQuestion");
-            nextQuestionButton.setAttribute('id', 'nextButton');
-            answerDiv.appendChild(nextQuestionButton);
-
-             
-        } 
-        else {
-             questionDiv.textContent = 'All items have been displayed.';
-             console.log(answerSubmissions);
-             quizResults(answerSubmissions);
-             
-             }
-        
-
-        // Function to compare user's answer submissions with the correct answers and show them their results
-        function quizResults(userAnswers) {
-            let correctAnswers = 0;
-            // 1. Prepare the UI
-         
-            // 2. Loop through the questionsArray and display a subheading for each question for the results
-             for (let i = 0; i < questionsArray.length; i++) {
-               let questionHeading = document.createElement("h2");
-               let text = document.createTextNode(questionsArray[i]["title"]);
-                questionHeading.appendChild(text);
-                answerDiv.appendChild(questionHeading);
-                let answerList = document.createElement("ul");
-                questionHeading.after(answerList);
-               // 3. Within the questionsArray loop also loop through the answersArray and add the relevant answers as list items below the question subheading
-                for (let x = 0; x < answersArray.length; x++) {
-                   if (answersArray[x]["questionId"] == questionsArray[i]["questionId"]) {
-                    console.log(answersArray[x]["questionId"]);
-                    let listItem = document.createElement("li");
-                    listItemText = document.createTextNode(answersArray[x]["answerText"]);
-                    listItem.appendChild(listItemText);
-                    answerList.appendChild(listItem);
-                    
-                       for (let y = 0; y < userAnswers.length; y++) {
-                        // check if the answer being added to the DOM is the same one that the user selected earlier
-
-                        // 4 Different cases possible:
-                        // Answer added to DOM is different to the user selection and the answer added to the DOM is correct
-                        // Answer added to DOM is different to the user selection and the answer added to the DOM is incorrect
-                        // Answer added to DOM is the same as the user selection and the answer added to the DOM is correct
-                        // Answer added to DOM is the same as the user selection and the answer added to the DOM is incorrect
-
-                        if ((answersArray[x]["answerId"] == userAnswers[y]) && answersArray[x]["isCorrect"]) {
-                            console.log(`${answersArray[x]["answerText"]} has the answer ID of ${userAnswers[y]}`);
-                            console.log(answersArray[x]["isCorrect"]);
-                            listItem.classList.add("green-answer");
-                            correctAnswers++;
-                        } else if ((answersArray[x]["answerId"] == userAnswers[y]) && !answersArray[x]["isCorrect"]) {
-                            console.log(`${answersArray[x]["answerText"]} has the answer ID of ${userAnswers[y]}`);
-                            console.log(answersArray[x]["isCorrect"]);
-                            listItem.classList.add("red-answer");
-                        } else if ((answersArray[x]["answerId"] !== userAnswers[y]) && answersArray[x]["isCorrect"]) {
-                             console.log(`${answersArray[x]["answerText"]} has the answer ID of ${userAnswers[y]}`);
-                            console.log(answersArray[x]["isCorrect"]);
-                            listItem.classList.add("green-answer");
-                        }
-                         //console.log(answersArray[x]["answerId"] == userAnswers[y]);
-                         //console.log(answersArray[x]["isCorrect"]);
-                       }
-
-                       console.log(`You scored ${correctAnswers} out of ${userAnswers.length}`);
-
-  
-
-                      
-                   }
-                                     
-
-          // 4. if the answerID selected by the user in the answerSubmissions does not match the "isCorrect" item in the answersArray then highlight the relevant answer Red in the UI. Highlight the correct answer in green
-                 
-                
-                }
-
-             }
-                   let resultsText = `You scored ${correctAnswers} out of ${userAnswers.length}`;
-                    answerDiv.after(resultsText);
-
-  
-
+        // Loop through answersArray and compare the question id attribute from the answersArray items with the question id attribute from the current questionArray item
+        for (let i = 0; i < answersArray.length; i++) {
+          if (
+            answersArray[i]["questionId"] ==
+            questionsArray[currentIndex]["questionId"]
+          ) {
+            //console.log(`${answersArray[i]["questionId"]} is the same as ${questionsArray[currentIndex]["questionId"]}`);
+            // Push items to the relevant answers array if there is a match with the question Id
+            relevantAnswersArray.push(answersArray[i]);
+          }
         }
 
-        
+        // Loop through the relevant answers array and dynamically add the relevant answers to the DOM when the relevant question is displayed
+        for (let i = 0; i < relevantAnswersArray.length; i++) {
+          let questionButton = document.createElement("button");
+          let questionNumberSpan = document.createElement("span");
+          questionNumberSpan.classList.add("questionNumberSpan");
+          questionNumberSpan.textContent = String.fromCharCode(97 + i);
+          questionButton.appendChild(questionNumberSpan);
 
-         // Select all answer buttons
-        const answerButtons = document.querySelectorAll('.questionButton');
-        
-        // Add a click event listener to each button
-        answerButtons.forEach(button => {
-            button.addEventListener('click', () => {          
-         
-               // Push the selected button's answer ID into the answerSubmissions array to be used at the end of the quiz to calculate results
-                let selectedAnswerId = button.dataset.answerId;
-                answerSubmissions.push(parseInt(selectedAnswerId));
-                console.log(answerSubmissions);
-                
-                 
-                // Write a function to show the user their result immediately after they select item
+          let questionTextSpan = document.createElement("span");
+          questionTextSpan.classList.add("questionTextSpan");
+          questionTextSpan.textContent = relevantAnswersArray[i]["answerText"];
+          questionButton.appendChild(questionTextSpan);
 
-                console.log(button.dataset.answerId);
+          questionButton.dataset.isCorrect =
+            relevantAnswersArray[i]["isCorrect"];
+          questionButton.dataset.questionId =
+            relevantAnswersArray[i]["questionId"];
+          questionButton.dataset.answerId = relevantAnswersArray[i]["answerId"];
+          questionButton.classList.add("questionButton");
+          answerDiv.appendChild(questionButton);
 
-                
-                console.log(selectedAnswerId);
+          //console.log(questionButton.dataset.isCorrect);
+          //console.log(questionButton);
+        }
 
-                for (button of answerButtons) {
-                 let n = 0;
-                 while (n < answersArray.length) {
-                    if ((button.dataset.answerId == selectedAnswerId) && answersArray[n]["answerId"] == selectedAnswerId && answersArray[n]["isCorrect"]) {
-                        button.classList.add("green-answer");
-                    } else if ((button.dataset.answerId == selectedAnswerId) && answersArray[n]["answerId"] == selectedAnswerId && !answersArray[n]["isCorrect"]) {
-                        button.classList.add("red-answer");
-                    } else if (button.dataset.answerId == answersArray[n]["answerId"] && answersArray[n]["isCorrect"])
-                    {
-                        button.classList.add("green-answer");
-                    }
-                    n++;
-                 }
-               
-                  
+        let nextQuestionButton = document.createElement("button");
+        nextQuestionButton.textContent = "Next Question";
+        nextQuestionButton.classList.add("nextQuestion");
+        nextQuestionButton.setAttribute("id", "nextButton");
+        answerDiv.appendChild(nextQuestionButton);
+      } else {
+        questionDiv.textContent = "All items have been displayed.";
+        console.log(answerSubmissions);
+        quizResults(answerSubmissions);
+      }
+
+      // Function to compare user's answer submissions with the correct answers and show them their results
+      function quizResults(userAnswers) {
+        let correctAnswers = 0;
+        // 1. Prepare the UI
+
+        // 2. Loop through the questionsArray and display a subheading for each question for the results
+        for (let i = 0; i < questionsArray.length; i++) {
+          let questionHeading = document.createElement("h2");
+          let text = document.createTextNode(questionsArray[i]["title"]);
+          questionHeading.appendChild(text);
+          answerDiv.appendChild(questionHeading);
+          let answerList = document.createElement("ul");
+          questionHeading.after(answerList);
+          // 3. Within the questionsArray loop also loop through the answersArray and add the relevant answers as list items below the question subheading
+          for (let x = 0; x < answersArray.length; x++) {
+            if (
+              answersArray[x]["questionId"] == questionsArray[i]["questionId"]
+            ) {
+              console.log(answersArray[x]["questionId"]);
+              let listItem = document.createElement("li");
+              listItemText = document.createTextNode(
+                answersArray[x]["answerText"]
+              );
+              listItem.appendChild(listItemText);
+              answerList.appendChild(listItem);
+
+              for (let y = 0; y < userAnswers.length; y++) {
+                // check if the answer being added to the DOM is the same one that the user selected earlier
+
+                // 4 Different cases possible:
+                // Answer added to DOM is different to the user selection and the answer added to the DOM is correct
+                // Answer added to DOM is different to the user selection and the answer added to the DOM is incorrect
+                // Answer added to DOM is the same as the user selection and the answer added to the DOM is correct
+                // Answer added to DOM is the same as the user selection and the answer added to the DOM is incorrect
+
+                if (
+                  answersArray[x]["answerId"] == userAnswers[y] &&
+                  answersArray[x]["isCorrect"]
+                ) {
+                  console.log(
+                    `${answersArray[x]["answerText"]} has the answer ID of ${userAnswers[y]}`
+                  );
+                  console.log(answersArray[x]["isCorrect"]);
+                  listItem.classList.add("green-answer");
+                  correctAnswers++;
+                } else if (
+                  answersArray[x]["answerId"] == userAnswers[y] &&
+                  !answersArray[x]["isCorrect"]
+                ) {
+                  console.log(
+                    `${answersArray[x]["answerText"]} has the answer ID of ${userAnswers[y]}`
+                  );
+                  console.log(answersArray[x]["isCorrect"]);
+                  listItem.classList.add("red-answer");
+                } else if (
+                  answersArray[x]["answerId"] !== userAnswers[y] &&
+                  answersArray[x]["isCorrect"]
+                ) {
+                  console.log(
+                    `${answersArray[x]["answerText"]} has the answer ID of ${userAnswers[y]}`
+                  );
+                  console.log(answersArray[x]["isCorrect"]);
+                  listItem.classList.add("green-answer");
                 }
-            
-                
-            })
-     })
+                //console.log(answersArray[x]["answerId"] == userAnswers[y]);
+                //console.log(answersArray[x]["isCorrect"]);
+              }
 
-  
-        
+              console.log(
+                `You scored ${correctAnswers} out of ${userAnswers.length}`
+              );
+            }
+
+            // 4. if the answerID selected by the user in the answerSubmissions does not match the "isCorrect" item in the answersArray then highlight the relevant answer Red in the UI. Highlight the correct answer in green
+          }
+        }
+        let resultsText = `You scored ${correctAnswers} out of ${userAnswers.length}`;
+        answerDiv.after(resultsText);
+      }
+
+      // Select all answer buttons
+      const answerButtons = document.querySelectorAll(".questionButton");
+
+      // Add a click event listener to each button
+      answerButtons.forEach((button) => {
+        button.addEventListener("click", () => {
+          // Push the selected button's answer ID into the answerSubmissions array to be used at the end of the quiz to calculate results
+          let selectedAnswerId = button.dataset.answerId;
+          answerSubmissions.push(parseInt(selectedAnswerId));
+          console.log(answerSubmissions);
+
+          // Write a function to show the user their result immediately after they select item
+
+          console.log(button.dataset.answerId);
+
+          console.log(selectedAnswerId);
+
+          for (button of answerButtons) {
+            let n = 0;
+            while (n < answersArray.length) {
+              if (
+                button.dataset.answerId == selectedAnswerId &&
+                answersArray[n]["answerId"] == selectedAnswerId &&
+                answersArray[n]["isCorrect"]
+              ) {
+                button.classList.add("green-answer");
+              } else if (
+                button.dataset.answerId == selectedAnswerId &&
+                answersArray[n]["answerId"] == selectedAnswerId &&
+                !answersArray[n]["isCorrect"]
+              ) {
+                button.classList.add("red-answer");
+              } else if (
+                button.dataset.answerId == answersArray[n]["answerId"] &&
+                answersArray[n]["isCorrect"]
+              ) {
+                button.classList.add("green-answer");
+              }
+              n++;
+            }
+          }
+        });
+      });
     }
 
-     
+    function handleNextQuestion() {
+      // Increment the index to show the next item
+      console.log("hey");
+      currentIndex++;
+      displayCurrentItem(); // Update the displayed item
+    }
 
- 
-     function handleNextQuestion() {
-        // Increment the index to show the next item
-        console.log("hey");
-        currentIndex++;
-        displayCurrentItem(); // Update the displayed item
-     }
+    // Set up the initial display and button event listener
+    displayCurrentItem();
 
-     // Set up the initial display and button event listener
-     displayCurrentItem();
+    const answerDisplayDiv = document.getElementById("answersDisplay");
 
-
- const answerDisplayDiv = document.getElementById('answersDisplay');
-    
- answerDisplayDiv.addEventListener("click", (event) => {
-      if(event.target.textContent == "Next Question") {
-          handleNextQuestion();
-       }
-   })
-
-
+    answerDisplayDiv.addEventListener("click", (event) => {
+      if (event.target.textContent == "Next Question") {
+        handleNextQuestion();
+      }
+    });
   })
-  .catch(error => {
+  .catch((error) => {
     console.error(error);
   });
-
-
-
 
 </script>

@@ -1,4 +1,5 @@
 using System.Reflection.Metadata.Ecma335;
+using System.Text.Json.Serialization;
 using FrontEndQuiz.Data;
 using Microsoft.EntityFrameworkCore;
 
@@ -17,7 +18,6 @@ builder.Services.AddDbContext<DataContext>(options =>
 
 // Add services to the container.
 builder.Services.AddControllersWithViews();
-
 
 
 var app = builder.Build();

@@ -1,0 +1,83 @@
+@model IEnumerable<FrontEndQuiz.Models.SpecModels.Topic>
+
+@{
+    ViewData["Title"] = "Edit Topics";
+}
+
+@{
+  string[] entry = Directory.GetDirectories("/");
+}
+<dialog id="modalSection" class="modal">
+  <div class="modalContainer">
+    <div class="topContainer">
+      <h2 class="topHeading">Select a topic image</h2>
+      <div aria-label="close image gallery window" class="close-btn" id="close-btn"></div>
+    </div>
+<div class="imageGallery" id="imageGallery">
+
+</div>
+
+    <div class="bottomContainer">
+          <div
+            class="imageGalleryButtonsContainer"
+            id="imageGalleryButtonsContainer"
+          >
+            <!-- <label for="imageUpload" class="imageUploadLabel"
+          >Upload your own topic image</label> -->
+
+            <input
+              type="file"
+              accept="image/*"
+              id="imageUpload"
+              class="fileUpload"
+              aria-label="Upload your own image"
+            />
+
+            <!-- <input type="submit" value="submit" /> -->
+          </div>
+          <input
+            class="submitButton hidden"
+            id="submitButton"
+            type="submit"
+            value="Submit"
+          />
+        </div>
+  </div>
+</dialog>
+
+
+<h2>Topics</h2>
+
+<table>
+    <thead>
+        <tr>
+            <th>Edit Topic</th>
+            <th>Topic Name</th>
+            <th>Topic Image Filepath</th>
+            <th>Update Image</th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach(var topic in Model)
+        {
+         <tr class="topicRow" data-topicid="@topic.TopicId">
+            <td>
+                <button class="updateImageButton" id="editTopic" data-topic-id="@topic.TopicId">Edit Topic</button></td>
+            <td>@topic.TopicName</td>
+            <td class="topicImageField" data-imageid="@topic.TopicId">@topic.TopicImageFilePath</td>
+            <td>
+      
+
+                <button class="updateImageButton" id="launchModal" data-topic-id="@topic.TopicId">Update image</button>
+         
+
+           </td>
+         </tr>
+        }
+    </tbody>
+</table>
+
+
+
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
+<script src="~/js/EditTopic.js"></script>

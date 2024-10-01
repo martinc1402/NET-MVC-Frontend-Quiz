@@ -22,11 +22,14 @@ let currentThemeSetting = calculateSettingsAsThemeString({
   systemSettingDark,
 });
 
+const toggleSwitch = document.querySelector("input[id=toggle]");
+
 window.addEventListener("load", () => {
   html.setAttribute("data-theme", currentThemeSetting);
+  if (currentThemeSetting === "dark") {
+    toggleSwitch.checked = true;
+  }
 });
-
-const toggleSwitch = document.querySelector("input[id=checkbox-theme]");
 
 toggleSwitch.addEventListener("change", () => {
   let newTheme = currentThemeSetting === "dark" ? "light" : "dark";

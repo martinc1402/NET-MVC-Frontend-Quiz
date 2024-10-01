@@ -1,4 +1,5 @@
-﻿@model IEnumerable<FrontEndQuiz.Models.SpecModels.Topic>
+﻿@* @model IEnumerable<FrontEndQuiz.Models.SpecModels.Topic> *@
+@model dynamic
 
 <div class="content-box">
 <div class="heading-box">
@@ -6,8 +7,14 @@
 <p class="tagline">Pick a subject to get started</p>
 </div>
 <div class="buttons-box">
-@foreach (var topic in @Model)
+
+
+  
+
+@foreach (var topic in Model.Topics)
 {
+    
+
     <a asp-action="TopicQuiz" asp-route-id="@topic.TopicId" class="button"><img class="icon" src="@topic.TopicImageFilePath" alt="@topic.TopicName"/><span class="buttonText">@topic.TopicName</span></a>
 }   
 </div>

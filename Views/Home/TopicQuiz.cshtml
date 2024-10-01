@@ -1,8 +1,12 @@
 
 @model List<FrontEndQuiz.Models.Question>
 
-
-
+@* <div>
+    @for (var i = 0; i < @Model.Count; i++) {
+        <p>@Model[i].TopicId</p>
+    }
+</div> *@
+<input id="topicId" name="topicId" type="hidden" value="@Model[0].TopicId">
 
 <div class="quizBox">
 <div id="questionDisplay" class="questionBox"></div>
@@ -21,19 +25,30 @@
 
 
 
+
+//const questionsRequest = fetch("/Home/GetAllQuestions").then((response) =>
+ // response.json()
+//);
+
 // Retrieve questions and answers data from database
-const questionsRequest = fetch("/Home/GetAllQuestions").then((response) =>
-  response.json()
-);
+const topicId = document.getElementById("topicId").value;
+
+const particularQuestionsRequest = fetch(`/Home/GetParticularQuestions/${topicId}`).then((response) => response.json());
+
 const answersRequest = fetch("/Home/GetAllAnswers").then((response) =>
   response.json()
 );
+
+
+
 // Fetch the data from the API
-Promise.all([questionsRequest, answersRequest])
+Promise.all([particularQuestionsRequest, answersRequest])
   .then(([questionsData, answersData]) => {
     // Store the fetched data in arrays and initiate a counter variable
     let questionsArray = questionsData;
     let answersArray = answersData;
+
+    console.log(questionsArray[0]);
 
     //console.log(questionsArray[0]["title"]);
     //console.log(answersArray[2]["isCorrect"]);

@@ -15,19 +15,10 @@
       
     <header class="header">
         <nav class="navbar">
-            <div class="menu-wrapper">
-                <ul class="menu-list">
-                    <li class="menu-item">
-                        <a class="menu-link" asp-area="" asp-controller="Home" asp-action="Index">Home</a>
-                    </li>
-                    <li class="menu-item">
-                        <a class="menu-link" asp-area="" asp-controller="Quiz" asp-action="Index">Questions</a>
-                    </li>
-                </ul>
-               <label id="theme-switch" class="theme-switch" for="checkbox_theme">
-                <input type="checkbox" id="checkbox-theme">
-                <label for="checkbox-theme" class="fas"></label>
-               </label>
+
+            <div class="toggle-switch">
+                <input class="toggle-input" id="toggle" type="checkbox">
+                <label class="toggle-label" for="toggle"></label>
             </div>
         </nav>
     </header>

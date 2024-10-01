@@ -10,5 +10,6 @@ namespace FrontEndQuiz.Models.SpecModels
         public int TopicId { get; set; } 
         public string TopicName { get; set;}
         public string TopicImageFilePath { get; set; }
+    
     }
 }
